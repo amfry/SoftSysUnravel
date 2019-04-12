@@ -1,4 +1,4 @@
-# Software Systems Project 2: Unravel
+# Unravel: Protothreading in C on Arduino
 ## Abby Fry and Nathan Estill
 
 ### Project Goals

@@ -4,8 +4,8 @@ static int protothread1_flag, protothread2_flag;
 int ButtonState; //Current state of button
 int LastButtonState; //previous state of button
 
-const int LED1 = 9; //
-const int LED2 = 10; //
+const int LED1 = 9;
+const int LED2 = 10;
 const int LED3 = 11;
 
 
@@ -26,19 +26,19 @@ static int outputs(struct pt *pt){
 
     LastButtonState = ButtonState;
 
-    if(LED_index / 3 == 1){  //as loop run, index doesn't have to be set back to 0
+    if(LED_index % 3 == 1){  //as loop run, index doesn't have to be set back to 0
       digitalWrite(LED1,HIGH);
       digitalWrite(LED2,LOW);
       digitalWrite(LED3,LOW);
     }
 
-    if(LED_index / 3 == 2){
+    if(LED_index % 3 == 2){
       digitalWrite(LED1,LOW);
       digitalWrite(LED2,HIGH);
       digitalWrite(LED3,LOW);
     }
 
-    if(LED_index / 3 == 3){
+    if(LED_index % 3 == 3){
       digitalWrite(LED1,LOW);
       digitalWrite(LED2,LOW);
       digitalWrite(LED3,HIGH);

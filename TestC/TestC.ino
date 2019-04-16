@@ -1,6 +1,11 @@
 #include "pt.h"
 /* Two flags that the two protothread functions use. */
 static int protothread1_flag, protothread2_flag;
+const int buttonPin = 7;
+const int LED1 = 9; //
+const int LED2 = 10; //
+const int LED3 = 11;
+static int LED_index = 0;
 
 /**
  * The first protothread function. A protothread function must always
@@ -14,12 +19,24 @@ static int protothread1(struct pt *pt)
 {
   /* A protothread function must begin with PT_BEGIN() which takes a pointer to a struct pt. */
   PT_BEGIN(pt);
-
+  int buttonTemp = 0;
   /* We loop forever here. */
   while(1) {
     /* Wait until the other protothread has set its flag. */
     PT_WAIT_UNTIL(pt, protothread2_flag != 0);
     Serial.println("Protothread 1 running\n");
+    if(digitalRead(buttonPin)){
+      if(!buttonTemp){
+        LED_index++;
+        buttonTemp = 1;
+        delay(20);
+      }
+    } else {
+      if(buttonTemp){
+        buttonTemp = 0;
+        delay(20);
+      }
+    }
 
     /* We then reset the other protothread's flag, and set our own flag so that the other protothread can run. */
     protothread2_flag = 0;
@@ -63,22 +80,6 @@ static int protothread2(struct pt *pt)
  * the two protothreads.
  */
 static struct pt pt1, pt2;
-int main2(void)
-{
-  /* Initialize the protothread state variables with PT_INIT(). */
-  PT_INIT(&pt1);
-  PT_INIT(&pt2);
-  
-  /*
-   * Then we schedule the two protothreads by repeatedly calling their
-   * protothread functions and passing a pointer to the protothread
-   * state variables as arguments.
-   */
-  while(1) {
-    protothread1(&pt1);
-    protothread2(&pt2);
-  }
-}
 
 void setup() {
   // put your setup code here, to run once:

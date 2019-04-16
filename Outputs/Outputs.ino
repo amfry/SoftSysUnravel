@@ -1,8 +1,8 @@
 #include "pt.h"
 static int protothread1_flag, protothread2_flag;
 
-int ButtonState;
-int LastButtonState;
+int ButtonState; //Current state of button
+int LastButtonState; //previous state of button
 
 const int LED1 = 9; //
 const int LED2 = 10; //
@@ -12,11 +12,11 @@ const int LED3 = 11;
 static int outputs(struct pt *pt){
 
   PT_BEGIN(pt);
-  int LED_index //index for the LED configuration the button is on
+  int LED_index = 0; //index for the LED configuration the button is on
 
   while(1){
-    PT_WAIT_UNTIL(pt,protothread1_flag !=0)
-    Serial.println("Protothread 2 is running\n")
+    PT_WAIT_UNTIL(pt,protothread1_flag !=0);
+    Serial.println("Protothread 2 is running\n");
     if (ButtonState!=LastButtonState){
       //check for change in ButtonState
       if (ButtonState == HIGH){

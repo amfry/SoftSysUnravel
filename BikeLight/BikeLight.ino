@@ -1,28 +1,55 @@
 #include "pt.h"
 static int protothread1_flag, protothread2_flag;
-const int buttonPin = 7;
+const int buttonPin = 6;
 const int LED1 = 9; //
 const int LED2 = 10; //
 const int LED3 = 11;
-static int LED_index = 0;
+//static int LED_index = 0;
 bool buttonTemp = 0;
+//uint8_t *stackptr;
 
-static int inputs(struct pt *pt){
+void setup(){
+  pinMode(LED1,OUTPUT);
+  pinMode(LED2,OUTPUT);
+  pinMode(LED3,OUTPUT);
+  pinMode(buttonPin,INPUT);
+  Serial.begin(9600);
+}
+
+//__attribute__((noinline)) int printer(String st){
+//  int rando = 0;
+//  stackptr =  (uint8_t *)(SP);
+//  Serial.print("Stack:");Serial.println((int) stackptr);  
+//  Serial.println("working");
+//  Serial.println(st);
+//  return rando;
+//}
+
+//void check_stack(){
+//  stackptr =  (uint8_t *)(SP);
+//}
+  
+int inputs(struct pt *pt){
+  SP = 1600;
+  int LED_index = 0;
   PT_BEGIN(pt);
+  uint8_t *stackptr;
+  stackptr =  (uint8_t *)(SP);
+//  Serial.print("Stack Input: "); Serial.println((int) stackptr);
   int ButtonState = LOW;
   int LastButtonState = LOW;
   int button = LOW;
   while(1) {
     PT_WAIT_UNTIL(pt, protothread2_flag != 0);
-//    Serial.println("Protothread 1 is running\n");
     button = digitalRead(buttonPin);
-    Serial.print("button: ");
-    Serial.println(button);
+//    Serial.print("button: ");
+//    Serial.println(button);
     if(button == HIGH){
-      Serial.print("Button Temp: ");
-      Serial.println(buttonTemp);
+//      Serial.print("Button Temp: ");
+//      Serial.println(buttonTemp);
       if(buttonTemp == 0){
         LED_index++;
+        *stackptr = 300;
         buttonTemp = 1;
         delay(40);
       }
@@ -32,36 +59,33 @@ static int inputs(struct pt *pt){
         delay(40);
       }
     }
-//    ButtonState = digitalRead(buttonPin);
-//    if (ButtonState!=LastButtonState){
-//      //check for change in ButtonState
-//      if (ButtonState == HIGH){
-//        LED_index ++; //check if button is pressed and change index acordingly
-//      }
-//    }
-//    Serial.println(LED_index);
     protothread2_flag = 0;
     protothread1_flag = 1;
   }
+ 
   PT_END(pt);
 }
-static int outputs(struct pt *pt){
-
-
+int outputs(struct pt *pt){
+  SP = 1600;
+  uint8_t *stackptr;
+  stackptr =  (uint8_t *)(SP);
+  int LED_index = 0;
+//  Serial.print("Input LED");Serial.println((int)&LED_index);
   PT_BEGIN(pt);
-
   while(1){
+    *stackptr = 3;
+//    Serial.print("Stack Output:");Serial.println((int) stackptr);
     protothread2_flag = 1;
     PT_WAIT_UNTIL(pt,protothread1_flag !=0);
-//    Serial.println("Protothread 2 is running\n");
-
+    //printer("hello");
+    Serial.println((int)*stackptr);
     if(LED_index % 3 == 0){  //as loop run, index doesn't have to be set back to 0
       digitalWrite(LED1,HIGH);
       digitalWrite(LED2,LOW);
       digitalWrite(LED3,LOW);
     }
 
-    if(LED_index % 3 == 1){
+    if (LED_index % 3 == 1){
       digitalWrite(LED1,LOW);
       digitalWrite(LED2,HIGH);
       digitalWrite(LED3,LOW);
@@ -74,22 +98,38 @@ static int outputs(struct pt *pt){
     }
 
     protothread1_flag = 0;
+//    stackptr =  (uint8_t *)(SP);
+//    Serial.print("Stack:");Serial.println((int) stackptr);
   }
   PT_END(pt);
 }
 static struct pt pt1, pt2;
-
-void setup(){
-  pinMode(LED1,OUTPUT);
-  pinMode(LED2,OUTPUT);
-  pinMode(LED3,OUTPUT);
-  pinMode(buttonPin,INPUT);
-  Serial.begin(9600);
-}
+//void recurse2(int counter){
+//  if(counter < 100){
+//    stackptr =  (uint8_t *)(SP);
+//    Serial.print(counter);Serial.print(":"); Serial.println((int) stackptr);
+//    recurse(counter + 1);
+//  }
+//}
+//__attribute__((noinline)) int recurse(int counter){
+//  int pewpewpewpewpewpewpew = 0;
+//  if(counter < 100){
+//    stackptr =  (uint8_t *)(SP);
+//    Serial.print(counter);Serial.print(":"); Serial.println((int) stackptr);
+//    SP = SP - 8;
+//    recurse(counter + 1);
+//  }
+//  return pewpewpewpewpewpewpew + counter;
+//}
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+//  check_stack();
+//  Serial.print("Stack: ");
+//  Serial.println((int) * stackptr);
+//  recurse(0);
+  Serial.print("global");
+  Serial.println((int) &buttonTemp);
   PT_INIT(&pt1);
   PT_INIT(&pt2);
   /*

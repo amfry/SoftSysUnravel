@@ -15,8 +15,11 @@ By working on this project, we want to gain a deeper understanding of how hardwa
 ### The Journey So Far
 We began by learning more about threading and challenges implementing them in C.  From that research, we found a library called pt.h and decided to use it to make protothreads on the Arduino. We got it to complile and run on the Arduino as protothreads. We used the pt.h library to make a program that could function as a bike light. The inputs thread handles the button pressing functionality to change the variable that remembers the state of the light. The outputs thread uses this variable to control which light is turned on. The two threads run such that they alternate running.
 
-### Next Steps
-At this point, we achieved our original MVP of getting two protothreads to run on an Arduino but we used a pre-existing library to implement it. Making our own library or using something like pthread.h are out of the scope of the project, so we pivoted to a slightly different goal. First we will figure out if the pt.h library threads are running on the same stack, which will be done when we use the same strategies as we did in exercise 9. Then we will learn more about stacks and how to create them and have functions interact with them. If they are running on different stacks, our next task would be to make the threads run on the same stack. the definition of done for this task is when the strategy we used to test if they run on the same stack works for our new implementation.
+### Challenge
+-what does it mean for the threads to be stackless
+-Inline w/ the stack
+
+
 
 [Github Repository](https://github.com/amfry/SoftSysUnravel)
 

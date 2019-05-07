@@ -16,11 +16,8 @@ void setup(){
 }
   
 int inputs(struct pt *pt){
-  SP = 1600;
-  int LED_index = 0;
+  // Handles the button sensor of the Bike Light
   PT_BEGIN(pt);
-  uint8_t *stackptr;
-  stackptr =  (uint8_t *)(SP);
   int ButtonState = LOW;
   int LastButtonState = LOW;
   int button = LOW;
@@ -30,7 +27,6 @@ int inputs(struct pt *pt){
     if(button == HIGH){
       if(buttonTemp == 0){
         LED_index++;
-        *stackptr = 300;
         buttonTemp = 1;
         delay(40);
       }
@@ -47,11 +43,7 @@ int inputs(struct pt *pt){
   PT_END(pt);
 }
 int outputs(struct pt *pt){
-  SP = 1600;
-  Serial.println("this is happening");
-  uint8_t *stackptr;
-  stackptr =  (uint8_t *)(SP);
-  int LED_index = 0;
+  // Handles the LEDs of the bike light
   PT_BEGIN(pt);
   while(1){
     protothread2_flag = 1;
@@ -80,21 +72,7 @@ int outputs(struct pt *pt){
 }
 static struct pt pt1, pt2;
 
-//__attribute__((noinline)) int recurse(int counter){
-//  if(counter < 100){
-//    stackptr =  (uint8_t *)(SP);
-//    Serial.print(counter);Serial.print(":"); Serial.println((int) stackptr);
-//    SP = SP - 8;
-//    recurse(counter + 1);
-//  }
-//}
-
 void loop() {
-  // put your main code here, to run repeatedly:
-//  check_stack();
-//  Serial.print("Stack: ");
-//  Serial.println((int) * stackptr);
-//  recurse(0);
   Serial.print("global");
   Serial.println((int) &buttonTemp);
   PT_INIT(&pt1);

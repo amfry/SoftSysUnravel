@@ -2,7 +2,7 @@
 ## Abby Fry and Nathan Estill
 
 ### Project Goals
-Our project goal is to create a program that can run multiple threads on an Arduino Uno.  Our minimum goal was to understand how protothreading works and have a small program that utilizes multi-threading to make two things update simultaneously on an Arduino.  We decided to implement our protothreads in the context of creating a simple "bike light."  Our "bike light" was made up of 3 LEDs that could be toggled through with a button.
+Our project goal is to create a program that can run multiple threads on an Arduino Uno.  Our minimum goal was to understand how protothreading works and have a small program that utilizes multi-threading to make two things update simultaneously on an Arduino.  We decided to implement our protothreads in the context of creating a simple bike light.  Our bike light was made up of 3 LEDs that could be toggled through with a button.
 
 After completing our minimum goal, we focused on learning more about the stack and how the library we used utilized the stack to make multi-threading possibly on the Arduino. Our ultimate goal was to be able move the stack pointer for each of the threads and have the thread run at a new point in address space.
 
@@ -12,10 +12,10 @@ After completing our minimum goal, we focused on learning more about the stack a
 * [Details about protothreading](http://dunkels.com/adam/pt/)
 
 ### Setting Up the PT Thread Library Tutorial
-Setting up the PT Thread for Arduino was difficult the first time through. First you need to download the pt thread folder from [the website](http://dunkels.com/adam/pt/download.html) and put it into your Arduino libraries folder. The thread won't compile the first time around. The examples included in the library need additional libraries. As they are not neccesary, delete the three files 'example-buffer.c', 'example-codelock.c' and 'example-small.c'. After that, the library should compile just fine in Arduino.
+Setting up the PT Thread for Arduino was difficult the first time through. First you need to download the pt thread folder from [the website](http://dunkels.com/adam/pt/download.html) and put it into your Arduino libraries folder. The thread library won't compile the first time around. The examples included in the library need additional libraries. As they are not neccesary, delete the three files 'example-buffer.c', 'example-codelock.c' and 'example-small.c'. After that, the library should compile just fine in Arduino.
 
 ### Hardware Setup
-To create the hardware set up we used for the bike light :
+To create the hardware for the bike light set up, we used :
 * Arduino Uno
 * 3 LEDs
 * A 4 pin button
@@ -39,7 +39,7 @@ int inputs(struct pt *pt){
   PT_END(pt);
 }
 ```
-Below is a showing "bike light" alternative LEDs after the button is pressed.
+Below is a showing the bike light alternating LEDs after the button is pressed.
 
 [![](http://img.youtube.com/vi/CSBi38pHqTo/0.jpg)](http://www.youtube.com/watch?v=CSBi38pHqTo "Bike Light Demo")
 

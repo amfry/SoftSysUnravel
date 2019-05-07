@@ -79,8 +79,7 @@ int outputs(struct pt *pt){
   PT_END(pt);
 }
 static struct pt pt1, pt2;
-// This function checks to see if the stack pointer moves in the protothread.
-// The stack pointer does move in the protothread
+
 //__attribute__((noinline)) int recurse(int counter){
 //  if(counter < 100){
 //    stackptr =  (uint8_t *)(SP);

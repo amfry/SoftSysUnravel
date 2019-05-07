@@ -11,7 +11,7 @@
 
 /* Two flags that the two protothread functions use. */
 static int protothread1_flag, protothread2_flag;
-
+int counter = 0;
 /**
  * The first protothread function. A protothread function must always
  * return an integer, but must never explicitly return - returning is
@@ -20,6 +20,15 @@ static int protothread1_flag, protothread2_flag;
  * The protothread function is driven by the main loop further down in
  * the code.
  */
+ //  }
+ int recurse(int counter){
+  if(counter < 100){
+    register int sp asm ("sp");
+    printf("Look at stack pointer %d\n",sp);
+    //sp = sp - 1;
+    recurse(counter + 1);}
+}
+
 static int
 protothread1(struct pt *pt)
 {
@@ -54,15 +63,14 @@ static int
 protothread2(struct pt *pt)
 {
   PT_BEGIN(pt);
-
   while(1) {
     /* Let the other protothread run. */
     protothread2_flag = 1;
-
+    recurse(counter);
     /* Wait until the other protothread has set its flag. */
     PT_WAIT_UNTIL(pt, protothread1_flag != 0);
     printf("Protothread 2 running\n");
-    
+
     /* We then reset the other protothread's flag. */
     protothread1_flag = 0;
 
@@ -84,7 +92,7 @@ main(void)
   /* Initialize the protothread state variables with PT_INIT(). */
   PT_INIT(&pt1);
   PT_INIT(&pt2);
-  
+
   /*
    * Then we schedule the two protothreads by repeatedly calling their
    * protothread functions and passing a pointer to the protothread

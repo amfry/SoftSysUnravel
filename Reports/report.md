@@ -21,7 +21,8 @@ To create the hardware for the bike light set up, we used :
 * A 4 pin button
 * 3 200K resistors
 
-[SEE c00l SCHEMATIC HERE ]
+![Circuit Schematic](https://github.com/amfry/SoftSysUnravel/blob/master/circuit.JPG)
+
 ### Protothreading
 We started off by creating a basic threading program to confirm we could get multiple threads running with pthreads library.  Then we laid out a skeleton for our bike light program.  We divided up functionality into an input and output threads. The inputs thread handled the button pressing functionality to change the variable that remembers the state of the light. The outputs thread uses this variable to control which light is turned on.  
 
@@ -39,7 +40,7 @@ int inputs(struct pt *pt){
   PT_END(pt);
 }
 ```
-Below is a showing the bike light alternating LEDs after the button is pressed.
+Below is a video showing the bike light alternating LEDs after the button is pressed.
 
 [![](http://img.youtube.com/vi/CSBi38pHqTo/0.jpg)](http://www.youtube.com/watch?v=CSBi38pHqTo "Bike Light Demo")
 
